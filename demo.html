@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>Chessboard Demo</title>
+
+  <link rel="stylesheet" type="text/css" href="board/boardStyle.css">
+  <style>
+    .toparea {
+      width: 100%;
+
+      display: flex;
+      gap: 10px;
+
+      justify-content: space-around;
+    }
+
+    .grow1 {
+      flex-grow: 1;
+      text-align: right;
+    }
+
+    .layout {
+      display: flex;
+      position: relative;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 5%;
+    }
+
+    .gamedata {
+      margin-top: 0px;
+    }
+
+    .control {
+      margin-top: 16px;
+    }
+
+    #movesarea {
+      margin-top: 16px;
+      resize: none;
+
+    }
+
+    .left {
+      text-align: left;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 2px;
+    }
+
+    .just4saving {
+      display: none;
+    }
+
+    .overlayinside {
+      height: 100px;
+      margin-top: 20%;
+      display: flex;
+      position: relative;
+      gap: 16px;
+      justify-content: center;
+      color: white;
+      text-align: center
+    }
+
+    #overlay {
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    #waitinglabel {
+      font-size: larger;
+    }
+
+    #readyOV {
+      display: none;
+    }
+
+    #readyB {
+      display: none;
+    }
+
+
+  </style>
+</head>
+
+
+
+
+<section class="layout">
+  <br>
+  <div class="left">
+    <section class="toparea">
+      <div>
+        <h3>Chessboard Demo</h3>
+      </div>
+
+    </section>
+    <div class="board" id="board"> </div>
+  </div>
+  <div>
+    <div class="bottom">
+      <p id="playerw" class="gamedata">Player 1 &#9816;</p>
+      <p id="timew" class="gamedata">05:00</p>
+      <p id="playerb" class="gamedata">Player 2 &#9822;</p>
+      <p id="timeb" class="gamedata">05:00</p>
+
+      <button class="control" onclick="rotate()">rotate &#11118 </button>
+    </div>
+  </div>
+</section>
+
+
+<script type="text/javascript" src="board/board.js"></script>
+<script type="text/javascript" src="board/boardLogic.js"></script>
+<script>
+
+  // board.js & boardLogic.js have to be imported
+  GAMEMODE = true;
+  init();
+
+
+  function rotate() {
+    rotateBoard();
+  } 
+</script>
+</body>
+
+</html>
