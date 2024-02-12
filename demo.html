@@ -4,9 +4,9 @@
 <head>
 
   <meta charset="UTF-8">
-  <title>Chessboard Demo</title>
+  <title>demo</title>
 
-  <link rel="stylesheet" type="text/css" href="board/boardStyle.css">
+  <!--<link rel="stylesheet" type="text/css" href="board/boardStyle.css"> -->
   <style>
     .toparea {
       width: 100%;
@@ -17,11 +17,6 @@
       justify-content: space-around;
     }
 
-    .grow1 {
-      flex-grow: 1;
-      text-align: right;
-    }
-
     .layout {
       display: flex;
       position: relative;
@@ -30,13 +25,6 @@
       margin-top: 5%;
     }
 
-    .gamedata {
-      margin-top: 0px;
-    }
-
-    .control {
-      margin-top: 16px;
-    }
 
     #movesarea {
       margin-top: 16px;
@@ -57,47 +45,6 @@
       bottom: 2px;
     }
 
-    .just4saving {
-      display: none;
-    }
-
-    .overlayinside {
-      height: 100px;
-      margin-top: 20%;
-      display: flex;
-      position: relative;
-      gap: 16px;
-      justify-content: center;
-      color: white;
-      text-align: center
-    }
-
-    #overlay {
-      position: fixed;
-      display: none;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
-      z-index: 2;
-      cursor: pointer;
-    }
-
-    #waitinglabel {
-      font-size: larger;
-    }
-
-    #readyOV {
-      display: none;
-    }
-
-    #readyB {
-      display: none;
-    }
-
 
   </style>
 </head>
@@ -110,7 +57,7 @@
   <div class="left">
     <section class="toparea">
       <div>
-        <h3>Chessboard Demo</h3>
+        <h3>demo</h3>
       </div>
 
     </section>
@@ -118,29 +65,53 @@
   </div>
   <div>
     <div class="bottom">
-      <p id="playerw" class="gamedata">Player 1 &#9816;</p>
-      <p id="timew" class="gamedata">05:00</p>
-      <p id="playerb" class="gamedata">Player 2 &#9822;</p>
-      <p id="timeb" class="gamedata">05:00</p>
-
-      <button class="control" onclick="rotate()">rotate &#11118 </button>
+      <button class="control" onclick="rotate()">rotate board</button>
     </div>
   </div>
 </section>
 
+<!-- include/board.js-->
+<script type="text/javascript" src="include/board.js"></script>
 
-<script type="text/javascript" src="board/board.js"></script>
-<script type="text/javascript" src="board/boardLogic.js"></script>
 <script>
 
-  // board.js & boardLogic.js have to be imported
-  GAMEMODE = true;
-  init();
+/* board.js must be included  */
 
+async function demo() {
 
-  function rotate() {
-    rotateBoard();
-  } 
+GAMEMODE = false; // piece movement deactivated
+
+clear(); // clear the board
+build(); // build standart start pos
+
+await new Promise(r => setTimeout(r, 2000)); // only for visualisation
+
+movePiece('e2', 'e4'); // move piece from square to square
+
+await new Promise(r => setTimeout(r, 2000)); // only for visualisation
+
+/* example pos. string */
+const posStr = ` 
+r . b q k b n r 
+p p p p . p p p 
+. . n . . . . . 
+. B . . p . . . 
+. . . . P . . . 
+. . . . . N . . 
+P P P P . P P P 
+R N B Q K . . R`
+
+buildFromPosStr(posStr); // builds pos. from string
+
+await new Promise(r => setTimeout(r, 2000)); // only for visualisation
+
+rotateBoard(); // rotates the board
+
+GAMEMODE = true; // piece movement activated
+}
+
+demo();
+
 </script>
 </body>
 
