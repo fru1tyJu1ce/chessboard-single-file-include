@@ -77,9 +77,15 @@
 
 /* board.js must be included  */
 
+
 async function demo() {
 
 GAMEMODE = false; // piece movement deactivated
+
+spawnPiece( 'K', 'white', 'd6'); // spwans a piece on given suqare (long notation)
+
+await new Promise(r => setTimeout(r, 2000)); // only for visualisation
+
 
 clear(); // clear the board
 build(); // build standart start pos
