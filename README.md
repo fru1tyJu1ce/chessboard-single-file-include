@@ -57,9 +57,6 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   // Spawn a white king on square d6
   spawnPiece('K', 'white', 'd6');
 
-  // Pause for visualization
-  await new Promise(r => setTimeout(r, 2000));
-
   // Clear the board
   clear();
 
