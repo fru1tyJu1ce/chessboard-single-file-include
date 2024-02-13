@@ -96,7 +96,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 ## Demo
 
-A live demo of the chessboard component can be found [here](https://kosher-code.github.io/chess-board-single-file-include/).
+A live demo of the chessboard component can be found [here](https://fru1tyju1ce.github.io/chess-board-single-file-include/).
 
 ## License
 
