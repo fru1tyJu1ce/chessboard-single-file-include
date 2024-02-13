@@ -26,6 +26,8 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 - `GAMEMODE`: A flag to toggle piece movement. When set to `false`, piece movement is deactivated. When set to `true`, piece movement is activated.
 
+- `init()`: Initialises the board, GAMEMODE should be set.
+
 - `spawnPiece(pieceType, pieceColor, square)`: Spawns a piece of the given type ('K' for king, 'Q' for queen, etc.) and color ('white' or 'black') on the specified square (in long notation, e.g., 'd6').
 
 - `await new Promise(r => setTimeout(r, 2000));`: Pauses execution for 2000 milliseconds, primarily for visualization purposes.
@@ -53,6 +55,9 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 <script>
   // Deactivate piece movement
   GAMEMODE = false;
+
+  // Initialise the board (GAMEMODE has  to bne set already)
+  init(); 
 
   // Spawn a white king on square d6
   spawnPiece('K', 'white', 'd6');

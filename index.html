@@ -65,60 +65,15 @@
   </div>
   <div>
     <div class="bottom">
-      <button class="control" onclick="rotate()">rotate board</button>
+      <button class="control" onclick="rotateBoard()">rotate board</button>
     </div>
   </div>
 </section>
 
 <!-- include/board.js-->
 <script type="text/javascript" src="include/board.js"></script>
-
-<script>
-
-/* board.js must be included  */
-
-
-async function demo() {
-
-GAMEMODE = false; // piece movement deactivated
-
-spawnPiece( 'K', 'white', 'd6'); // spwans a piece on given suqare (long notation)
-
-await new Promise(r => setTimeout(r, 2000)); // only for visualisation
-
-
-clear(); // clear the board
-build(); // build standart start pos
-
-await new Promise(r => setTimeout(r, 2000)); // only for visualisation
-
-movePiece('e2', 'e4'); // move piece from square to square
-
-await new Promise(r => setTimeout(r, 2000)); // only for visualisation
-
-/* example pos. string */
-const posStr = ` 
-r . b q k b n r 
-p p p p . p p p 
-. . n . . . . . 
-. B . . p . . . 
-. . . . P . . . 
-. . . . . N . . 
-P P P P . P P P 
-R N B Q K . . R`
-
-buildFromPosStr(posStr); // builds pos. from string
-
-await new Promise(r => setTimeout(r, 2000)); // only for visualisation
-
-rotateBoard(); // rotates the board
-
-GAMEMODE = true; // piece movement activated
-}
-
-demo();
-
-</script>
+<!-- example-->
+<script type="text/javascript" src="example.js"></script>
 </body>
 
 </html>
