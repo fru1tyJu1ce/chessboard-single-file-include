@@ -6,9 +6,9 @@ This repository provides a simple and lightweight chessboard component that can 
 
 ### 1. Include the Component File and JavaScript File
 
-Copy the `chessboard.js` file from the `/include` directory into your project. Then, include the file in your HTML using a script tag:
+Copy the `board.js` file from the `/include` directory into your project. Then, include the file in your HTML using a script tag:
 ```html
-<script src="path/to/chessboard.js"></script>
+<script src="path/to/board.js"></script>
 ```
 
 ### 2. Add a Board Container
@@ -46,7 +46,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 ```javascript
 // Include the chessboard file
-<script src="path/to/chessboard.js"></script>
+<script src="include/board.js"></script>
 
 // Create a board container
 <div id="board" class="board"></div>
@@ -90,6 +90,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
   // Activate piece movement
   GAMEMODE = true;
+  init(); // <-- Always use init() after GAMEODE change
 </script>
 ```
 
