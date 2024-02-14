@@ -38,8 +38,6 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 - `spawnPiece(pieceType, pieceColor, square)`: Spawns a piece of the given type ('K' for king, 'Q' for queen, etc.) and color ('white' or 'black') on the specified square (in long notation, e.g., 'd6').
 
-- `await new Promise(r => setTimeout(r, 2000));`: Pauses execution for 2000 milliseconds, primarily for visualization purposes.
-
 - `clear()`: Clears the board.
 
 - `build()`: Builds the standard starting position.
