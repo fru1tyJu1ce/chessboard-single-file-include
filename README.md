@@ -2,6 +2,9 @@
 
 This repository provides a simple and lightweight chessboard component that can be easily included in your web project with minimal setup. With just one file inclusion and a few lines of code, you can have a fully functional chessboard on your website.
 
+![alt text](screenshot/screenshot.png "screenshot chess-board")
+
+
 ## Usage
 
 
