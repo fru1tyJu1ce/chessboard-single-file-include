@@ -4,18 +4,19 @@ This repository provides a simple and lightweight chessboard component that can 
 
 ## Usage
 
-### 1. Include the Component File and JavaScript File
 
-Copy the `board.js` file from the `/include` directory into your project. Then, include the file in your HTML using a script tag:
-```html
-<script src="path/to/board.js"></script>
-```
-
-### 2. Add a Board Container
+### 1. Add a Board Container
 
 Create a div element in your HTML file with the ID and class set to "board":
 ```html
 <div id="board" class="board"></div>
+```
+
+### 2. Include the JavaScript File
+
+Copy the `board.js` file from the `/include` directory into your project. Then, include the file in your HTML using a script tag:
+```html
+<script src="path/to/board.js"></script>
 ```
 
 ### Initialize the Chessboard
@@ -45,11 +46,11 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 ## Example
 
 ```javascript
-// Include the chessboard file
-<script src="include/board.js"></script>
-
 // Create a board container
 <div id="board" class="board"></div>
+
+// Include the chessboard file
+<script src="include/board.js"></script>
 
 // Initialize the chessboard
 <script>
@@ -97,7 +98,3 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 ## Demo
 
 A live demo of the chessboard component can be found [here](https://fru1tyju1ce.github.io/chess-board-single-file-include/).
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
