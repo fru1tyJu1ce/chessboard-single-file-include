@@ -4,6 +4,10 @@ This repository provides a simple and lightweight chessboard component that can 
 
 ![alt text](screenshot/screenshot.png "screenshot chess-board")
 
+## Demo
+
+A live demo of the chessboard component can be found [here](https://fru1tyju1ce.github.io/chess-board-single-file-include/).
+
 
 ## Usage
 
@@ -97,7 +101,3 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   init(); // <-- Always use init() after GAMEODE change
 </script>
 ```
-
-## Demo
-
-A live demo of the chessboard component can be found [here](https://fru1tyju1ce.github.io/chess-board-single-file-include/).
