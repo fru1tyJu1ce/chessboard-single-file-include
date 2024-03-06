@@ -92,7 +92,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   buildFromPosStr(posStr);
 
   // Returns actual position string 
-  getPosStr()
+  getPosStr();
 
   // Rotate the board
   rotateBoard();

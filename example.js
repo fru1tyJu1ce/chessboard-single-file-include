@@ -44,26 +44,12 @@ async function demo() {
 
     move('e2', 'e4'); // move e2 e4
 
+    console.log(getPosStr()); // prints the actual pos string from getPosStr()
+
+
     }
 
     init(); // initialise the board
-   
-    const posStr = ` 
-    r . b q k b n r 
-    p p p p . p p p 
-    . . n . . . . . 
-    . B . . p . . . 
-    . . . . P . . . 
-    . . . . . N . . 
-    P P P P . P P P 
-    R N B Q K . . R`
-    
-    buildFromPosStr(posStr); // builds pos. from string
-
-    console.log(getPosStr()) // prints the actual pos string from getPosStr()
-
-
-    clear();
 
     demo();
     
