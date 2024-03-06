@@ -42,7 +42,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 - `build()`: Builds the standard starting position.
 
-- `movePiece(fromSquare, toSquare)`: Moves a piece from one square to another.
+- `move(fromSquare, toSquare)`: Moves a piece from one square to another.
 
 - `buildFromPosStr(posStr)`: Builds the board position from a given position string.
 
@@ -75,7 +75,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   build();
 
   // Move a piece from e2 to e4
-  movePiece('e2', 'e4');
+  move('e2', 'e4');
 
   // Example position string
   const posStr = `
@@ -90,6 +90,9 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   
   // Build position from string
   buildFromPosStr(posStr);
+
+  // Returns actual position string 
+  getPosStr()
 
   // Rotate the board
   rotateBoard();
