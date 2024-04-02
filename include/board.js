@@ -386,16 +386,29 @@ document.getElementById('board').innerHTML = boardHTML;
 
 /* BOARD SETTINGS */
 
-const STORAGE = document.querySelector(".storage");
+const STORAGE = document.querySelector('.storage');
 
 GAMEMODE = true;
 ROTATED = false;
 IDCOUNT = 9;
 
-SELECTEDSQUARE = '';
+SELECTEDSQUARE = ''; // actual/last per click selected square
+LASTPOSSTR = ''; // last position, before the last move/change (for reverse/undo)
+LASTPOSFEN = '';  
+
+/* FEN STATS */
+TURN = 'w'
+
+K = 'K';
+Q = 'Q';
+
+k = 'k';
+q = 'q';
+
+ENPASANT = '-'
+
 
 /* BOARD & PIECE ROTATION */
-
 function rotateAllPieces() {
   let allPieces = document.getElementsByClassName('piece');
   for (let i = 0; i < allPieces.length; ++i) {
@@ -410,14 +423,12 @@ function rotateBoard() {
 }
 
 
-
 /* PIECE MOVEMENT & (DRAG & DROP) EVENT LISTNER INITIALIZATION */
 
 function addListnerDragEvent(pieceId) {
   if (!GAMEMODE) return;
   document.getElementById(pieceId).addEventListener('dragstart', dragstart, false);
 }
-
 
 
 function initMovementListners() {
@@ -439,7 +450,9 @@ function initMovementListners() {
 
 function click(ev) {
   ev.preventDefault();
-  if(!GAMEMODE)return;
+  if (!GAMEMODE) return;
+  LASTPOSSTR = getActPosStr;
+  LASTPOSFEN = getActFEN();
   let target = (ev.srcElement || ev.target);
   if (SELECTEDSQUARE === '' && target.tagName === 'IMG') { // click on piece without selected piece
     SELECTEDSQUARE = ev.srcElement.parentElement.id || ev.target.parentElement.id;
@@ -447,8 +460,8 @@ function click(ev) {
     square.classList.add('selected');
   }
   else if (SELECTEDSQUARE !== '') { // click on occupied target suqare after piece selection
-    if (target.tagName === 'IMG') move(SELECTEDSQUARE, ev.srcElement.parentElement.id || ev.target.parentElement.id);
-    else move(SELECTEDSQUARE, ev.srcElement.id || ev.target.id);
+    if (target.tagName === 'IMG') movePiece(SELECTEDSQUARE, ev.srcElement.parentElement.id || ev.target.parentElement.id);
+    else movePiece(SELECTEDSQUARE, ev.srcElement.id || ev.target.id);
     let square = document.getElementById(SELECTEDSQUARE).parentElement;
     square.classList.remove('selected');
     SELECTEDSQUARE = '';
@@ -463,6 +476,8 @@ function allowDrop(ev) {
 }
 
 function dragstart(ev) {
+  LASTPOSSTR = getActPosStr();
+  LASTPOSFEN = getActFEN();
   ev.dataTransfer.setData('pieceId', ev.srcElement.id || ev.target.id);
   ev.dataTransfer.setData('squareId', ev.srcElement.parentElement.id || ev.target.parentElement.id);
 }
@@ -472,28 +487,34 @@ function drop(ev) {
   let target = (ev.srcElement || ev.target);
   let pieceId = ev.dataTransfer.getData('pieceId');
   let squareId = ev.dataTransfer.getData('squareId');
-  if (target.tagName === 'IMG') { // if target square is occupied  
+  let occupation = '';
+  if (target.tagName === 'IMG') { // if target square is occupied
+    occupation = target.id;
     target = target.parentElement;
-    if (squareId === target.id) return;
+    if (squareId === target.id) return; 
     target.removeChild((ev.srcElement || ev.target));
   }
   console.log(target);
   target.appendChild(document.getElementById(pieceId));
-  console.log('suqare: ' + squareId + ' target suqare: ' + target.id);
-  if (GAMEMODE) sendControlInstruction(squareId, target.id);
+  //console.log('suqare: ' + squareId + ' target suqare: ' + target.id); DEBUG
+  if (GAMEMODE) interpretMove(squareId, target.id, pieceId, occupation); // TODO 
 }
 
 
 /* PIECES PLACING FUNCTIONS */
 
-function move(suqareId, targetSuqareId) {
-  //console.log('move(' + suqareId + '/' + targetSuqareId + ')'); // DEBUG
+function movePiece(suqareId, targetSuqareId) {
+  pieceId = getSuqareOccupation(suqareId);
   if (suqareId == targetSuqareId) return;
   let target = document.getElementById(targetSuqareId);
   let suqare = document.getElementById(suqareId);
-  if (target.hasChildNodes()) target.removeChild(target.firstChild);
+  let occupation = '';
+  if (target.hasChildNodes()) { // if target square is occupied
+    occupation = target.firstChild.id;
+    target.removeChild(target.firstChild);
+  }
   target.appendChild(suqare.firstChild);
-  if(GAMEMODE)sendControlInstruction(suqareId, targetSuqareId);
+  if (GAMEMODE) interpretMove(suqareId, targetSuqareId, pieceId, occupation); // TODO 
 }
 
 function placePiece(pieceId, squareId) {
@@ -501,6 +522,8 @@ function placePiece(pieceId, squareId) {
 }
 
 function spawnPiece(piece, square) {
+  LASTPOSSTR = getActPosStr();
+  LASTPOSFEN = getActFEN();
   IDCOUNT++;
   let newId = piece + IDCOUNT;
   let pieceElem = document.querySelector('#' + piece);
@@ -520,10 +543,16 @@ function clear() {
   }
 }
 
-/* BUILD POS FROM STRIN
+/* helper function returns pieceid if the square is occupied, empty string if suquasr is not occupied */
+function getSuqareOccupation(squareId) {
+  let square = document.getElementById(squareId);
+  if (!square.hasChildNodes()) return '';
+  return square.firstElementChild.id;
+}
 
-EXAMPLE: 
+/* BUILD POS FROM STRING
 
+example posStr: 
    "r . b q k b n r 
     p p p p . p p p 
     . . n . . . . . 
@@ -531,15 +560,17 @@ EXAMPLE:
     . . . . P . . . 
     . . . . . N . . 
     P P P P . P P P 
-    R N B Q K . . R"
+    R N B Q K . . R" */
 
-*/
 function buildFromPosStr(posStr) {
-  let positions = posStr.replace(/(\r\n|\n|\r|\s)/gm, '');
+  if (posStr.length > 90) return;
+  LASTPOSFEN = getActFEN();
+  LASTPOSSTR = getActPosStr();
   clear();
+  let positions = posStr.replace(/(\r\n|\n|\r|\s)/gm, '');
 
-  const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-  const pieces = ['K', 'k', 'Q', 'q', 'R', 'r', 'B', 'b', 'N', 'n', 'P', 'p']
+  const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  const pieces = ['K', 'k', 'Q', 'q', 'R', 'r', 'B', 'b', 'N', 'n', 'P', 'p'];
   let linecount = 9;
   let columncount = -1;
 
@@ -549,7 +580,6 @@ function buildFromPosStr(posStr) {
     if (columncount == 0) linecount--;
     if (linecount == 0) return;
     let square = String(columns[columncount]) + String(linecount);
-
     if (positions[i] == '.') {
       continue;
     }
@@ -561,44 +591,130 @@ function buildFromPosStr(posStr) {
   }
 }
 
+/* BUILD POS from FEN STRING
+
+example FEN: "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3" */
+
+function buildFromFEN(fen) {
+  LASTPOSFEN = getActFEN();
+  LASTPOSSTR = getActPosStr();
+  clear();
+  let parts = fen.split(' ');
+  let positions = parts[0];
+  positions = positions.replace(/\//g, '');
+
+  // Set global variables from FEN parts
+  TURN = parts[1];
+
+  // Reset castling rights
+  K = parts[2].includes('K') ? 'K' : '';
+  Q = parts[2].includes('Q') ? 'Q' : '';
+  k = parts[2].includes('k') ? 'k' : '';
+  q = parts[2].includes('q') ? 'q' : '';
+
+  ENPASANT = parts[3];
+
+  const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  let linecount = 8;
+  let columncount = 0;
+
+  for (var i = 0; i < positions.length; i++) {
+    if (!isNaN(positions[i])) { // If the character is a number, skip that many squares
+      columncount += parseInt(positions[i]);
+    } else { // Else, spawn a piece on the board
+      let square = String(columns[columncount % 8]) + String(linecount);
+      spawnPiece(positions[i], square);
+      columncount++;
+    }
+    // Move to the next row if necessary
+    if (columncount >= 8) {
+      linecount--;
+      columncount = 0;
+    }
+  }
+}
+
+
+function castling(from, to, piece) {
+  // w kingside castling
+  if (from === 'e1' && to === 'g1' && piece.charAt(0) === 'K' && K === 'K') {
+    movePiece('h1', 'f1');
+    return true;
+  }
+  // w queenside castling
+  else if (from === 'e1' && to === 'c1' && piece.charAt(0) === 'K' && Q === 'Q') {
+    movePiece('a1', 'd1');
+    return true;
+  }
+  // b kingside castling
+  else if (from === 'e8' && to === 'g8' && piece.charAt(0) === 'k' && k === 'k') {
+    movePiece('h8', 'f8');
+    return true;
+  }
+  // b queenside castling
+  else if (from === 'e8' && to === 'c8' && piece.charAt(0) === 'k' && q === 'q') {
+    movePiece('a8', 'd8');
+    return true;
+  }
+  return false;
+}
+
+function checkForPawnPromotion(to, piece) {
+  if (piece.charAt(0) === 'P' && to.endsWith('8')) {
+    return true;
+  }
+  else if (piece.charAt(0) === 'p' && to.endsWith('1')) {
+    return true;
+  }
+  return false;
+}
+
+function checkForEnPassant(from, to, piece) {
+  if ((piece.charAt(0) === 'P' && from.charAt(1) === '2' && to.charAt(1) === '4') ||
+    (piece.charAt(0) === 'p' && from.charAt(1) === '7' && to.charAt(1) === '5')) {
+    return piece.charAt(0) === 'P' ? from.charAt(0) + '3' : from.charAt(0) + '6';
+  }
+  return '-';
+}
+
+/* interprets the move 4 castlings, promotions, enpassant and sets the FEN stats */
+function interpretMove(from, to, piece, occupation) {
+  if (castling(from, to, piece)) {
+    if(piece.charAt(0).toUpperCase() === piece.charAt(0)){ K = ''; Q = '';} // set castling fen
+    else { k = ''; q = ''}
+  } else {
+    if(from === 'a1' && piece.charAt(0) === 'R')Q ='';
+    else if(from === 'h1' && piece.charAt(0) === 'R')K = '';
+    else if(from === 'a8' && piece.charAt(0) === 'r')q ='';
+    else if(from === 'h8' && piece.charAt(0) === 'r')k = '';
+    else if( piece.charAt(0) === 'K'){ K = ''; Q = '';}
+    else if( piece.charAt(0) === 'k'){ k = ''; q = '';}
+  }
+
+  if(checkForPawnPromotion(to, piece)) {
+    // TODO CHOOOOOOSE
+    console.log('start choosing')
+  }
+
+  ENPASANT = checkForEnPassant(from, to, piece);
+  if (piece.charAt(0) === piece.charAt(0).toUpperCase()) TURN = 'b'; // determine next turn by w or b 
+  else TURN = 'w'; // set turn fen
+
+
+  // set other turn
+  //console.log('interpreter: ' + from + ' / ' + to + ' | ' + piece + ' (' + occupation + ')');
+  sendControlInstruction(from, to);
+}
+
+function move(move) {
+
+}
+
 
 function build() {
   clear();
-  spawnPiece("k", "e8");
-  spawnPiece("q", "d8");
-  spawnPiece("r", "h8");
-  spawnPiece("r", "a8");
-  spawnPiece("b", "f8");
-  spawnPiece("b", "c8");
-  spawnPiece("n", "g8");
-  spawnPiece("n", "b8");
-  spawnPiece("p", "a7");
-  spawnPiece("p", "b7");
-  spawnPiece("p", "c7");
-  spawnPiece("p", "d7");
-  spawnPiece("p", "e7");
-  spawnPiece("p", "f7");
-  spawnPiece("p", "g7");
-  spawnPiece("p", "h7");
-
-  spawnPiece("K", "e1");
-  spawnPiece("Q", "d1");
-  spawnPiece("R", "h1");
-  spawnPiece("R", "a1");
-  spawnPiece("B", "f1");
-  spawnPiece("B", "c1");
-  spawnPiece("N", "g1");
-  spawnPiece("N", "b1");
-  spawnPiece("P", "a2");
-  spawnPiece("P", "b2");
-  spawnPiece("P", "c2");
-  spawnPiece("P", "d2");
-  spawnPiece("P", "e2");
-  spawnPiece("P", "f2");
-  spawnPiece("P", "g2");
-  spawnPiece("P", "h2");
+  buildFromFEN(getStartPositionFEN());
 }
-
 
 
 /* INITIALIZATION */
@@ -609,22 +725,76 @@ function init() {
 /* GET THE ACTUAL POSITION STRING */
 function getActPosStr() {
   let positions = [];
-  const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+  const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   let linecount = 9;
   let columncount = -1;
 
-  for (var i = 0; i < 84; i++) { // check all squares
+  for (var i = 0; i < 84; i++) {
     columncount++;
     columncount %= 8;
     if (columncount == 0) linecount--;
-    if (linecount == 0) return positions.join(''); // RETURN -> all suqares chaked
+    if (linecount == 0) return positions.join('');
     let squareId = String(columns[columncount]) + String(linecount);
     target = document.getElementById(squareId);
     if (target.hasChildNodes()) {
-      let piece = target.firstChild.id.charAt(0); // get piece on suqare
+      let piece = target.firstChild.id.charAt(0);
       positions[i] = piece;
     } else positions[i] = '.';
   }
+}
+
+/* GET THE ACTUAL FEN STRING */
+function getActFEN() {
+  let fenRows = [];
+  const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  let linecount = 8;
+  let emptyCount = 0;
+
+  for (let row = 0; row < 8; row++) {
+    let rowRepresentation = "";
+
+    for (let col = 0; col < 8; col++) {
+      let squareId = `${columns[col]}${linecount}`;
+      let target = document.getElementById(squareId);
+
+      if (target && target.hasChildNodes()) {
+        if (emptyCount > 0) {
+          rowRepresentation += emptyCount; // Add count of empty squares before this piece
+          emptyCount = 0; // Reset empty count
+        }
+        let piece = target.firstChild.id.charAt(0); // Assume ID's first character represents the piece
+        rowRepresentation += piece;
+      } else {
+        emptyCount++; // Increment empty square count
+      }
+    }
+
+    if (emptyCount > 0) {
+      rowRepresentation += emptyCount; // Add any remaining empty squares
+      emptyCount = 0; // Reset for next row
+    }
+
+    fenRows.push(rowRepresentation);
+    linecount--;
+  }
+
+  // Combine the FEN rows with global variables for a complete FEN string
+  let castlingRights = `${K}${Q}${k}${q}`;
+  if (castlingRights === "") {
+    castlingRights = "-";
+  }
+
+  // Construct and return the full FEN string
+  let fen = fenRows.join('/') + " " + // Position
+    TURN + " " +
+    castlingRights + " " +
+    ENPASANT + " ";
+  return fen;
+}
+
+/* GET THE START POSITION FEN STRING */
+function getStartPositionFEN() {
+  return 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq -';
 }
 
 /* GET THE ACTUAL POSITION STRING JSON */
@@ -634,21 +804,38 @@ function getPosStr() {
   })
 }
 
+/* GET THE ACTUAL FEN STRING JSON */
+function getFEN() {
+  return msg = JSON.stringify({ // JSON with actual position string 
+    FEN: getActFEN()
+  })
+}
+
+/* GET THE LAST POSITION STRING JSON */
+function getLastPosStr() {
+  return msg = JSON.stringify({ 
+    posStr: LASTPOSSTR
+  })
+}
+
+/* GET THE LAST FEN STRING JSON */
+function getLastFEN() {
+  return msg = JSON.stringify({ 
+    FEN: LASTPOSFEN
+  })
+}
+
 /* FUNCTION CALLED ON INPUT  */
 function sendControlInstruction(from, to) {
   msg = JSON.stringify({ // JSON with the move data providet by the user input
-    type: 'move',
     from: from,
     to: to,
-    posStr: getActPosStr()
+    lastFEN: LASTPOSFEN,
+    lastPosStr: LASTPOSSTR,
+    posStr: getActPosStr(), 
+    fen: getActFEN()
   })
 
   /* PLACEHOLDER FOR TRIGGER FUNCTION */
-
   console.log(msg); // move data 
 }
-
-
-
-
-

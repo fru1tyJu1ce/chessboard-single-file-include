@@ -1,6 +1,8 @@
 # Chess Board Single File Include
 
 This repository provides a simple and lightweight chessboard component that can be easily included in your web project with minimal setup. With just one file inclusion and a few lines of code, you can have a fully functional chessboard on your website.
+Only vanilla JS, HTML and CSS are used.
+The official FEN notation format is supported.
 
 ![alt text](screenshot/screenshot.png "screenshot chess-board")
 
@@ -36,15 +38,29 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 - `init()`: Initialises the board, GAMEMODE should be set.
 
-- `spawnPiece(pieceType, pieceColor, square)`: Spawns a piece of the given type ('K' for king, 'Q' for queen, etc.) and color ('white' or 'black') on the specified square (in long notation, e.g., 'd6').
+- `spawnPiece(piece, square)`: Spawns a piece of the given type ('K' for king, 'Q' for queen, etc.) and color 'K' or 'k' (Capital letter means white),  on the specified square (in long notation, e.g., 'd6').
 
 - `clear()`: Clears the board.
 
 - `build()`: Builds the standard starting position.
 
-- `move(fromSquare, toSquare)`: Moves a piece from one square to another.
+- `movePiece(suqareId, targetSuqareId)`: Moves a piece from one square to another. If GAMEMODE is true sendControlInstruction(from, to) is called.
 
 - `buildFromPosStr(posStr)`: Builds the board position from a given position string.
+
+- `buildFromFEN(fen)`: Builds the board position from a given FEN string.
+
+- `getSuqareOccupation(squareId)`: Returns a string with letter+Id of the piece, if the suqare is not occupied the return value is an empty string. 
+
+- `getPosStr()`: Returns a JSON with actual posStr.
+
+- `getLastPosStr()`: Returns a JSON with last/previous posStr.
+
+- `getFEN()`: Returns a JSON with actual FEN.
+
+- `getLastFEN()`: Returns a JSON with last/previous FEN.
+
+- `getStartPositionFEN()`: Returns a String with the startpos. FEN.
 
 - `rotateBoard()`: Rotates the board.
 
@@ -66,16 +82,16 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   init(); 
 
   // Spawn a white king on square d6
-  spawnPiece('K', 'white', 'd6');
+  spawnPiece('K', 'd6');
 
   // Clear the board
   clear();
 
-  // Build the standard starting position
+  // Build the standard start position
   build();
 
   // Move a piece from e2 to e4
-  move('e2', 'e4');
+  movePiece('e2', 'e4');
 
   // Example position string
   const posStr = `
@@ -91,8 +107,20 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   // Build position from string
   buildFromPosStr(posStr);
 
-  // Returns actual position string 
+  // Build position from official FEN notation string
+  buildFromFEN('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3');
+
+  // Returns actual position string JSON format
   getPosStr();
+
+  // Returns last/previous position string JSON format
+  getLastPosStr()
+
+  // Returns actual FEN string JSON format
+  getFENS();
+
+  // Returns last/previous FEN string JSON format
+  function getLastFEN()
 
   // Rotate the board
   rotateBoard();
@@ -100,5 +128,6 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   // Activate piece movement
   GAMEMODE = true;
   init(); // <-- Always use init() after GAMEODE change
+                 to (re)initialize the eventhandler
 </script>
 ```

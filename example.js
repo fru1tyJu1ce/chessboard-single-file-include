@@ -50,6 +50,9 @@ async function demo() {
     }
 
     init(); // initialise the board
-
-    demo();
+    build();
+    //buildFromFEN('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1');
+    console.log(getFEN());
+    
+    //demo();
     
