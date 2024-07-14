@@ -1,8 +1,9 @@
 # Chess Board Single File Include
 
-This repository provides a simple and lightweight chessboard component that can be easily included in your web project with minimal setup. With just one file inclusion and a few lines of code, you can have a fully functional chessboard on your website.
-Only vanilla JS, HTML and CSS are used.
-The official FEN notation format is supported.
+A vanilla JavaScript, HTML, and CSS chessboard frontend that supports displaying chess games, piece movement via drag & drop and point & click, and interpreting official FEN notation. It also allows direct square input/output (e.g., a4 to a6). 
+This chess board is easily integrable with a single file, examples below.
+
+
 
 ![alt text](screenshot/screenshot.png "screenshot chess-board")
 
