@@ -494,7 +494,7 @@ function drop(ev) {
     if (squareId === target.id) return; 
     target.removeChild((ev.srcElement || ev.target));
   }
-  console.log(target);
+  //console.log(target);
   target.appendChild(document.getElementById(pieceId));
   //console.log('suqare: ' + squareId + ' target suqare: ' + target.id); DEBUG
   if (GAMEMODE) interpretMove(squareId, target.id, pieceId, occupation); // TODO 
@@ -759,19 +759,19 @@ function getActFEN() {
 
       if (target && target.hasChildNodes()) {
         if (emptyCount > 0) {
-          rowRepresentation += emptyCount; // Add count of empty squares before this piece
-          emptyCount = 0; // Reset empty count
+          rowRepresentation += emptyCount;
+          emptyCount = 0; 
         }
-        let piece = target.firstChild.id.charAt(0); // Assume ID's first character represents the piece
+        let piece = target.firstChild.id.charAt(0);
         rowRepresentation += piece;
       } else {
-        emptyCount++; // Increment empty square count
+        emptyCount++; 
       }
     }
 
     if (emptyCount > 0) {
-      rowRepresentation += emptyCount; // Add any remaining empty squares
-      emptyCount = 0; // Reset for next row
+      rowRepresentation += emptyCount; 
+      emptyCount = 0; 
     }
 
     fenRows.push(rowRepresentation);
@@ -827,15 +827,17 @@ function getLastFEN() {
 
 /* FUNCTION CALLED ON INPUT  */
 function sendControlInstruction(from, to) {
-  msg = JSON.stringify({ // JSON with the move data providet by the user input
+  msg = { // JSON OBJECT with the move data providet by user input
     from: from,
     to: to,
     lastFEN: LASTPOSFEN,
     lastPosStr: LASTPOSSTR,
     posStr: getActPosStr(), 
     fen: getActFEN()
-  })
-
-  /* PLACEHOLDER FOR TRIGGER FUNCTION */
-  console.log(msg); // move data 
+  }
+  //console.log(msg);
+  
+  /* CUSTOM EVENT TRIGERED ON INPUT  */
+  var evt = new CustomEvent("chessBoardInputOccured", {detail: msg});
+  window.dispatchEvent(evt);
 }

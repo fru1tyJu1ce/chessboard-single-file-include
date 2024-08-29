@@ -8,6 +8,23 @@
 
   <!--<link rel="stylesheet" type="text/css" href="board/boardStyle.css"> -->
   <style>
+    @font-face {
+      font-family: 'SpaceMono';
+      src: url('./res/fonts/Space_Mono/SpaceMono-Regular.ttf');
+    }
+
+    html {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    body {
+      height: 100%;
+      overflow: auto;
+      font-family: 'SpaceMono';
+      font-size: small;
+    }
+
     .toparea {
       width: 100%;
 
@@ -45,7 +62,22 @@
       bottom: 2px;
     }
 
+    #posstring {
+      font-size: 1em;
+      line-height: 1em;
+      border: 1px solid #ccc;
+      padding: 0;
+      box-sizing: border-box;
+      resize: none;
+      overflow: hidden;
+      display: block;
+      font-family: 'SpaceMono';
+      margin-top: 1em;
+    }
 
+    #posstring-lbl {
+      font-size: 0.9em;
+    }
   </style>
 </head>
 
@@ -55,16 +87,22 @@
   <div class="left">
     <section class="toparea">
       <div>
-        <!--demo-->
+        <p id="top-txt"> &nbsp; &nbsp; frontend only (no rules implemented)</p>
       </div>
-
-
     </section>
+
+    <button class="control" onclick="rotateBoard()">rotate board &#8597; </button>
+
     <div class="board" id="board"> </div>
   </div>
+
   <div>
     <div class="bottom">
-      <button class="control" onclick="rotateBoard()">rotate board</button>
+      <div>
+        <label id="posstring-lbl" for="posstring">Position <br> String:</label>
+        <br>
+        <textarea id="posstring" name="posstring" rows="8" cols="8" readonly> </textarea>
+      </div>
     </div>
   </div>
 </section>

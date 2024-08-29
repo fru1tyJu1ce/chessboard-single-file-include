@@ -1,7 +1,7 @@
 # Chess Board Single File Include
 
 A vanilla JavaScript, HTML, and CSS chessboard frontend that supports displaying chess games, piece movement via drag & drop and point & click, and interpreting official FEN notation. It also allows direct square input/output (e.g., a4 to a6). 
-This chess board is easily integrable with a single file, examples below.
+This chess board is easily integrable with a single file, example below.
 
 
 
@@ -47,6 +47,8 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 - `movePiece(suqareId, targetSuqareId)`: Moves a piece from one square to another. If GAMEMODE is true sendControlInstruction(from, to) is called.
 
+- `chessBoardInputOccured`: Custom event wich is triggered on userinput with complete move data in the detail field.
+
 - `buildFromPosStr(posStr)`: Builds the board position from a given position string.
 
 - `buildFromFEN(fen)`: Builds the board position from a given FEN string.
@@ -64,6 +66,8 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 - `getStartPositionFEN()`: Returns a String with the startpos. FEN.
 
 - `rotateBoard()`: Rotates the board.
+
+
 
 ## Example
 
@@ -93,6 +97,19 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
   // Move a piece from e2 to e4
   movePiece('e2', 'e4');
+
+  // Listennfor the chessBoardInputOccured cutom event 
+  window.addEventListener("chessBoardInputOccured", function (evt) {
+    console.log(evt.detail); 
+  }, false);
+
+  /*
+    evt.detail = {
+      "from":"e2","to":"e4",
+     "lastFEN":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - ","lastPosStr":"rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNR","posStr":"rnbqkbnrpppppppp....................P...........PPPP.PPPRNBQKBNR",
+     "fen":"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 "
+    }
+  */
 
   // Example position string
   const posStr = `
