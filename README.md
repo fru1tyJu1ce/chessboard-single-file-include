@@ -29,11 +29,11 @@ Copy the `board.js` file from the `/include` directory into your project. Then, 
 <script src="path/to/board.js"></script>
 ```
 
-### Initialize the Chessboard
+### Initialize the chessboard
 
 You're now ready to start using the chessboard component. Use the provided JavaScript functions to interact with the board.
 
-## Functions Available
+## Functions available
 
 - `GAMEMODE`: A flag to toggle piece movement. When set to `false`, piece movement is deactivated. When set to `true`, piece movement is activated.
 
@@ -69,7 +69,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 
 
-## Example
+## Examples
 
 ```javascript
 // Create a board container
@@ -106,8 +106,10 @@ You're now ready to start using the chessboard component. Use the provided JavaS
   /*
     evt.detail = {
       "from":"e2","to":"e4",
-     "lastFEN":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - ","lastPosStr":"rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNR","posStr":"rnbqkbnrpppppppp....................P...........PPPP.PPPRNBQKBNR",
-     "fen":"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 "
+      "lastFEN":"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - ",
+      "lastPosStr":"rnbqkbnrpppppppp................................PPPPPPPPRNBQKBNR",
+      "posStr":"rnbqkbnrpppppppp....................P...........PPPP.PPPRNBQKBNR",
+      "fen":"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 "
     }
   */
 
