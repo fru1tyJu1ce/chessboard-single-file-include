@@ -38,6 +38,7 @@ Copy the `board.js` file from the `/include` directory into your project. Then, 
 ```
 
 You're now ready to start using the chessboard component. Use the provided JavaScript functions to interact with the board.
+You can find the full example below.
 
 ## Functions available
 
@@ -75,7 +76,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 
 
-## Examples
+## Example
 
 ```javascript
 // Create a board container
