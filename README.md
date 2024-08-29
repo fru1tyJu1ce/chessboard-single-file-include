@@ -29,7 +29,13 @@ Copy the `board.js` file from the `/include` directory into your project. Then, 
 <script src="path/to/board.js"></script>
 ```
 
-### Initialize the chessboard
+### 3. Initialize the chessboard
+```html
+<script>
+  GAMEMODE = true;
+  init();
+</script>
+```
 
 You're now ready to start using the chessboard component. Use the provided JavaScript functions to interact with the board.
 
@@ -37,7 +43,7 @@ You're now ready to start using the chessboard component. Use the provided JavaS
 
 - `GAMEMODE`: A flag to toggle piece movement. When set to `false`, piece movement is deactivated. When set to `true`, piece movement is activated.
 
-- `init()`: Initialises the board, GAMEMODE should be set.
+- `init()`: Initialises the board.
 
 - `spawnPiece(piece, square)`: Spawns a piece of the given type ('K' for king, 'Q' for queen, etc.) and color 'K' or 'k' (Capital letter means white),  on the specified square (in long notation, e.g., 'd6').
 
