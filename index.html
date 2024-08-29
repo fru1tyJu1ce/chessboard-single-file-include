@@ -59,10 +59,16 @@
 
     .bottom {
       position: absolute;
-      bottom: 2px;
+      bottom: 0.4em;
+    }
+
+    #rotate-btn {
+      margin-top: 1em;
     }
 
     #posstring {
+      margin-top: 0.5em;
+
       font-size: 1em;
       line-height: 1em;
       border: 1px solid #ccc;
@@ -72,7 +78,6 @@
       overflow: hidden;
       display: block;
       font-family: 'SpaceMono';
-      margin-top: 1em;
     }
 
     #posstring-lbl {
@@ -87,11 +92,9 @@
   <div class="left">
     <section class="toparea">
       <div>
-        <p id="top-txt"> </p>
+        <p id="top-txt">Chessboard</p>
       </div>
     </section>
-
-    <button class="control" onclick="rotateBoard()">rotate board </button>
 
     <div class="board" id="board"> </div>
   </div>
@@ -103,6 +106,8 @@
         <br>
         <textarea id="posstring" name="posstring" rows="8" cols="8" readonly> </textarea>
       </div>
+      <button id="rotate-btn" class="control" onclick="rotateBoard()">rotate board </button>
+
     </div>
   </div>
 </section>
