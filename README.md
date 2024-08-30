@@ -9,7 +9,7 @@ This chess board is easily integrable with a single file, example below.
 
 ## Demo
 
-A live demo of the chessboard component can be found [here](https://fru1tyju1ce.github.io/chess-board-single-file-include/).
+A live demo of the chessboard component can be found [here](https://fru1tyju1ce.github.io/chessboard-single-file-include/).
 
 
 ## Usage
