@@ -1,4 +1,4 @@
-# Chess Board Single File Include
+# Chessboard Single File Include
 
 A vanilla JavaScript, HTML, and CSS chessboard frontend that supports displaying chess games, piece movement via drag & drop and point & click, and interpreting official FEN notation. It also allows direct square input/output (e.g., a4 to a6). 
 This chess board is easily integrable with a single file, example below.
