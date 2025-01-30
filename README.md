@@ -7,9 +7,9 @@ This chess board is easily integrable with a single file, example below.
 
 ![alt text](screenshot/screenshot.png "screenshot chess-board")
 
-## Demo
+## Preview
 
-A live demo of the chessboard component can be found [here](https://fru1tyju1ce.github.io/ChessFrameJs/).
+A Preview of the chessboard component can be found [here](https://fru1tyju1ce.github.io/ChessFrameJs/).
 
 
 ## Usage
@@ -24,9 +24,9 @@ Create a div element in your HTML file with the ID and class set to "board":
 
 ### 2. Include the JavaScript File
 
-Copy the `board.js` file from the `/include` directory into your project. Then, include the file in your HTML using a script tag:
+Copy the `ChessFrameJs.js` file from the `/include` directory into your project. Then, include the file in your HTML using a script tag:
 ```html
-<script src="path/to/board.js"></script>
+<script src="path/to/ChessFrameJs.js"></script>
 ```
 
 ### 3. Initialize the chessboard
